@@ -3,16 +3,54 @@
 
 #define INPUT_SIZE 17
 
+/*Boolean*/
+#define TRUE 1
+#define FALSE 0
+
+/*For Rule Calculation*/
+#define PLUS '+'
+#define MINUS '-'
+#define MULTIPLICATION '*'
+#define DIVISION '/'
+
+typedef int boolean;
+
 void printCalculator(char input[]);
 void printCarrigeReturn(int count);
 void removeCarrigeReturn(char *input);
 
+boolean checkValidation(char input[]);
+boolean isForRuleCalculation(char word);
+boolean isNumber(char word);
+
 int main()
 {
     char input[INPUT_SIZE];
-    fgets(input, INPUT_SIZE, stdin);
-    removeCarrigeReturn(input);
-    printCalculator(input);
+
+    while (TRUE)
+    {
+        printf("quit 입력시 종료 :\t");
+        fgets(input, INPUT_SIZE, stdin);
+
+        fflush(stdin);
+
+        removeCarrigeReturn(input);
+
+        if (strcmp(input, "quit") == 0)
+        {
+            break;
+        }
+        else if (checkValidation(input) == FALSE || strlen(input) == 0)
+        {
+            printf("입력값이 올바르지 않습니다.\n");
+            continue;
+        }
+        else
+        {
+            printCalculator(input);
+            printf("연산중..\n");
+        }
+    }
     return 0;
 }
 
@@ -54,4 +92,31 @@ void removeCarrigeReturn(char input[])
     {
         input[inputLength - 1] = '\0';
     }
+}
+
+boolean checkValidation(char input[])
+{
+    printf("%s\n", input);
+
+    for (int i = 0; i < strlen(input); i++)
+    {
+        char word = input[i];
+
+        if ((isForRuleCalculation(word) || isNumber(word)) == FALSE)
+        {
+            return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
+boolean isForRuleCalculation(char word)
+{
+    return word == PLUS || word == MINUS || word == MULTIPLICATION || word == DIVISION;
+}
+
+boolean isNumber(char word)
+{
+    return word >= '0' && word <= '9';
 }
