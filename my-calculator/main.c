@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define INPUT_SIZE 17
 
@@ -18,10 +19,20 @@ typedef int boolean;
 void printCalculator(char input[]);
 void printCarrigeReturn(int count);
 void removeCarrigeReturn(char *input);
+void push(char word);
+void clearStack();
 
 boolean checkValidation(char input[]);
 boolean isForRuleCalculation(char word);
 boolean isNumber(char word);
+
+typedef struct StackNode
+{
+    char value;
+    struct StackNode *link;
+} StackNode;
+
+StackNode *topIndex;
 
 int main()
 {
@@ -31,10 +42,13 @@ int main()
     {
         printf("quit 입력시 종료 :\t");
         fgets(input, INPUT_SIZE, stdin);
-
         fflush(stdin);
-
         removeCarrigeReturn(input);
+
+        for (int i = 0; i < strlen(input); i++)
+        {
+            push(input[i]);
+        }
 
         if (strcmp(input, "quit") == 0)
         {
@@ -50,6 +64,8 @@ int main()
             printCalculator(input);
             printf("연산중..\n");
         }
+
+        clearStack();
     }
     return 0;
 }
@@ -119,4 +135,36 @@ boolean isForRuleCalculation(char word)
 boolean isNumber(char word)
 {
     return word >= '0' && word <= '9';
+}
+
+void push(char word)
+{
+    StackNode *temp = (StackNode *)malloc(sizeof(malloc));
+    temp->value = word;
+    temp->link = topIndex;
+    topIndex = temp;
+}
+
+char pop()
+{
+    char value;
+    StackNode *temp = topIndex;
+
+    if (temp == NULL)
+    {
+        return 'e';
+    }
+    value = temp->value;
+    topIndex = temp->link;
+    free(temp);
+
+    return value;
+}
+
+void clearStack()
+{
+    while (topIndex != NULL)
+    {
+        pop();
+    }
 }
