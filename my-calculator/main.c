@@ -21,6 +21,7 @@ void printCarrigeReturn(int count);
 void removeCarrigeReturn(char *input);
 void push(char word);
 void clearStack();
+void clearConsole();
 
 boolean checkValidation(char input[]);
 boolean isForRuleCalculation(char word);
@@ -43,6 +44,7 @@ int main()
         printf("quit 입력시 종료 :\t");
         fgets(input, INPUT_SIZE, stdin);
         fflush(stdin);
+        clearConsole();
         removeCarrigeReturn(input);
 
         for (int i = 0; i < strlen(input); i++)
@@ -56,7 +58,7 @@ int main()
         }
         else if (checkValidation(input) == FALSE || strlen(input) == 0)
         {
-            printf("입력값이 올바르지 않습니다.\n");
+            printf("%s\t입력값이 올바르지 않습니다.\n", input);
             continue;
         }
         else
@@ -72,7 +74,7 @@ int main()
 
 void printCalculator(char input[])
 {
-    printCarrigeReturn(2);
+    printCarrigeReturn(1);
 
     printf(" _____________________\n");
     printf("|  _________________  |\n");
@@ -112,8 +114,6 @@ void removeCarrigeReturn(char input[])
 
 boolean checkValidation(char input[])
 {
-    printf("%s\n", input);
-
     for (int i = 0; i < strlen(input); i++)
     {
         char word = input[i];
@@ -167,4 +167,15 @@ void clearStack()
     {
         pop();
     }
+}
+
+void clearConsole()
+{
+#ifdef _WIN64
+    system("cls");
+#elif _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
